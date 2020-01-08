@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <!-- ejs的for循环 -->
+  <% for(let i = 0;i<list.length;i++){ %>
+    <li>
+      <%= list[i] %>
+    </li>
+  <% } %>
+  <!-- public state -->
+  <%= name %>
+  <!-- 条件判断 -->
+  <% if(num < 18){ %>
+    <h3>还没有成年</h3>
+  <% }else{ %>
+    <h3>已经成年了</h3>
+  <% } %>
+</body>
+</html>
