@@ -1,14 +1,34 @@
 const Koa = require('koa')
 // 引入和实例化路由
 const router = require('koa-router')()
-// 
+// 模板中间件
 const views = require('koa-views')
+const path = require('path')
+// 静态文件中间件
+const static = require('koa-static')
+// art模板
+const render = require('koa-art-template')
 // koa实例化
 const app = new Koa()
+// 使用第三方中间件
+const bodyParser = require('koa-bodyparser');
+app.use(bodyParser());
 
-app.use(views('views',{
-  extension: 'ejs' //应用ejs模版引擎
-}))
+// 1.使用ejs模板
+// app.use(views('views',{
+//   extension: 'ejs' //应用ejs模版引擎
+// }))
+
+// 2.使用art模板
+render(app,{
+  root: path.join(__dirname, 'views'),
+  extname: '.art',
+  debug: process.env.NODE_ENV !== 'production'
+});
+
+// 使用静态文件中间件
+const staticPath = './static'
+app.use(static(path.join(__dirname,staticPath)))
 // 使用中间件
 // app.use(async (ctx,next) => {
 //   console.log('这是一个中间件');
@@ -30,8 +50,20 @@ app.use(async (ctx,next) => {
 router.get('/',async (ctx) => { //路由中间件
   let title = 'hello,ejs'
   await ctx.render('index',{
+    title: title,
+    value:'<h3>原样输出</h3>',
+    age: 20,
+    list: [1,2,3,4,5],
+  })
+})
+router.get('/login',async (ctx) => { //路由中间件
+  let title = 'login,ejs'
+  await ctx.render('login',{
     title: title
   })
+})
+router.post('/login',async (ctx) => { //路由中间件
+  ctx.body = ctx.request.body;
 })
 router.get('/news',async (ctx) => {
   let arr = [1,2,3,4,5]
@@ -50,9 +82,12 @@ router.get('/newsDetail',async (ctx) => {
 
   ctx.body='newsDetail';
 })
+
+//加载路由中间件
 app
   .use(router.routes())//启动路由
   .use(router.allowedMethods()) //默认加响应头
 
-app.listen(3001)
-console.log('服务器启动了');
+app.listen(3001,()=>{
+  console.log('服务器启动了');
+})

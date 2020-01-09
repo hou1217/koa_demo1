@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  
+  <% include('public/header') %>
+  <h2>这是index art模版引擎</h2>
+  <!-- 输出数据 -->
+  <h4>1.输出数据</h4>
+  <h3><%= title %></h3>
+  <h3>{{title}}</h3>
+  <!-- 原样输出不转义 -->
+  <h4>2.原样输出不转义</h4>
+  <h3><%- value %></h3>
+  <h3>{{@value}}</h3>
+  <!-- 静态文件 -->
+  <h4>3.静态文件</h4>
+  <p>
+    <img width="200" src="images/1.png" alt="">
+  </p>
+  <!-- 循环 -->
+  <h4>4.循环</h4>
+  <ul>
+    <% for(let i = 0;i<list.length;i++){ %>
+      <li>
+        <%= list[i] %>
+      </li>
+    <% } %>
+  </ul>
+  <ul>
+    {{each list}} 
+      <li>
+        {{$index}}--{{$value}}
+      </li>
+    {{/each}}
+  </ul>
+  <!-- 条件判断 -->
+  <h4>5.条件判断</h4>
+  <% if(age < 18){ %>
+    <h3>还没有成年</h3>
+  <% }else{ %>
+    <h3>已经成年了</h3>
+  <% } %>
+  {{if age < 18}}
+    <h3>还没有成年</h3>
+  {{else}}
+    <h3>已经成年了</h3>
+  {{/if}}
+</body>
+<script src="json/1.json"></script>
+</html>
