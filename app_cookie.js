@@ -21,10 +21,10 @@ router.get('/login',async (ctx) => { //路由中间件
   ctx.cookies.set(
     'token','hys123',{
       domain:'127.0.0.1', // 写cookie所在的域名
-      path:'/',       // 写cookie所在的路径
+      path:'/',       // 写cookie所在的路径,配置可以访问的页面
       maxAge:1000*60*60*24,   // cookie有效时长
       expires:new Date('2020-02-01'), // cookie失效时间
-      httpOnly:false,  // 是否只用于http请求中获取
+      httpOnly:false,  // 是否只用于http请求中获取，如果是true只有服务器端才可以访问，false表示客户端和服务器端都可以访问
       overwrite:false  // 是否允许重写
     }
   );
