@@ -1,6 +1,6 @@
 const Koa = require('koa')
 // 引入和实例化路由
-const router = require('koa-router')()
+// const router = require('koa-router')()
 // 模板中间件
 const views = require('koa-views')
 const path = require('path')
@@ -45,48 +45,18 @@ app.use(async (ctx,next) => {
   ctx.state.name = 'zhangsan';
   await next();
 })
+// 引入子路由
+const index = require('./routes/index')
+const news = require('./routes/news')
+// 不分层
+app.use(index.routes(), index.allowedMethods());
+app.use(news.routes(), news.allowedMethods());
 
-// 配置路由
-router.get('/',async (ctx) => { //路由中间件
-  let title = 'hello,ejs'
-  await ctx.render('index',{
-    title: title,
-    value:'<h3>原样输出</h3>',
-    age: 20,
-    list: [1,2,3,4,5],
-  })
-})
-router.get('/login',async (ctx) => { //路由中间件
-  let title = 'login,ejs'
-  await ctx.render('login',{
-    title: title
-  })
-})
-router.post('/login',async (ctx) => { //路由中间件
-  ctx.body = ctx.request.body;
-})
-router.get('/news',async (ctx) => {
-  let arr = [1,2,3,4,5]
-  await ctx.render('news',{
-    list: arr,
-    num: 23
-  })
-})
-// 动态路由
-router.get('/newsDetail',async (ctx) => {
-  // 从ctx读取query
-  console.log(ctx.query);//****推荐
-  console.log(ctx.params);
-  console.log(ctx.querystring);
-  console.log(ctx.url);
-
-  ctx.body='newsDetail';
-})
 
 //加载路由中间件
-app
-  .use(router.routes())//启动路由
-  .use(router.allowedMethods()) //默认加响应头
+// app
+//   .use(router.routes())//启动路由
+//   .use(router.allowedMethods()) //默认加响应头
 
 app.listen(3001,()=>{
   console.log('服务器启动了');
